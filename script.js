@@ -7,16 +7,16 @@ const searchForm = document.querySelector(".data-searchForm");
 const loadingScreen = document.querySelector(".loading-container");
 const userInfoContainer = document.querySelector(".user.info-container");
 
-let oldTab = userTab;
+let currentTab = userTab;
 const API_KEY= "e3eac7ba714d37d6f02d5c58f02a026a";
-oldTab.classList.add("current-tab");
+currentTab.classList.add("current-tab");
 
 
-function switchTab(newTab) {
-    if(newTab != oldTab){
-        oldTab.classList.remove("current-tab");
-        oldTab = newTab;
-        oldTab.classList.add("current-tab");
+function switchTab(clickedTab) {
+    if(clickedTab != currentTab){
+        currentTab.classList.remove("current-tab");
+        currentTab = clickedTab;
+        currentTab.classList.add("current-tab");
 
         if(!searchForm.classList.contains("active")){
             userInfoContainer.classList.remove("active");
@@ -25,8 +25,8 @@ function switchTab(newTab) {
         }
         else {
             // search tab se weather tab invisible krna h 
+            searchForm.classList.remove("active");
             userInfoContainer.classList.remove("active");
-            grantAccessConatiner.classList.remove("active");
 
             getfromSessionStorage();
         }
@@ -88,16 +88,17 @@ function renderWeatherInfo(weatherInfo){
     const humidity = document.querySelector("[data-humidity]");
     const cloudiness = document.querySelector("[data-cloudiness]");
 
+    console.log(weatherInfo);
     // fetch value from weatherInfo object and put it UI element
 
     cityName.innerText = weatherInfo?.name;
     countryIcon.src=`https://flagcdn.com/144x108/${weatherInfo?.sys?.country.toLowerCase()}.png`;
     desc.innerText = weatherInfo?.weather?.[0]?.description;
     weatherIcon.src=`https://openweathermap.org/img/w/${weatherInfo?.weather?.[0]?.icon}.png`;
-    temp.innerText = weatherInfo?.main?.temp;
-    windSpeed.innerText = weatherInfo?.wind?.speed;
-    humidity.innerText = weatherInfo?.main?.humidity;
-    cloudiness.innerText = weatherInfo?.clouds?.all;
+    temp.innerText = `${weatherInfo?.main?.temp} °C`;
+    windSpeed.innerText = `${weatherInfo?.wind?.speed} m/s`;
+    humidity.innerText = `${weatherInfo?.main?.humidity}%`;
+    cloudiness.innerText = `${weatherInfo?.clouds?.all}%`;
 
 
 }
